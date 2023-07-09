@@ -1,1 +1,74 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
+class Drivers {
+    private String name;
+    private String carModel;
+    private double rating;
+    private int distanceFromCustomer;
+
+    public Drivers(String name, String carModel, double rating, int distanceFromCustomer) {
+        this.name = name;
+        this.carModel = carModel;
+        this.rating = rating;
+        this.distanceFromCustomer = distanceFromCustomer;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public int getDistanceFromCustomer() {
+        return distanceFromCustomer;
+    }
+}
+
+public class Riding {
+    public static void main(String[] args) {
+        // Sample Input
+        int customerRideDistance = 43; // in km
+        String carRequested = "Sedan";
+
+        List<Drivers> drivers = new ArrayList<>();
+        drivers.add(new Drivers("A", "Sedan", 4, 500));
+        drivers.add(new Drivers("B", "HatchBack", 4.3, 1000));
+        drivers.add(new Drivers("C", "5 Seater", 4.8, 200));
+        drivers.add(new Drivers("D", "Sedan", 4.1, 700));
+        drivers.add(new Drivers("E", "HatchBack", 4.7, 430));
+
+        // Filter drivers based on conditions
+        List<Drivers> filteredDrivers = new ArrayList<>();
+        for (Drivers driver : drivers) {
+            if (driver.getRating() >= 4 && driver.getCarModel().equalsIgnoreCase(carRequested)) {
+                filteredDrivers.add(driver);
+            }
+        }
+
+        // Sort drivers by distance from customer
+        filteredDrivers.sort(Comparator.comparingInt(Drivers::getDistanceFromCustomer));
+
+        // Check if any suitable drivers are available
+        if (filteredDrivers.isEmpty()) {
+            System.out.println("No available drivers for the requested car.");
+        } else {
+            // Find the closest driver
+            Drivers closestDriver = filteredDrivers.get(0);
+
+            // Calculate fare
+            int fare = customerRideDistance * 8;
+
+            // Print the output
+            System.out.println("Driver " + closestDriver.getName() + " will get you to the destination.");
+            System.out.println("Your charge will be Rs " + fare);
+        }
+    }
+}
